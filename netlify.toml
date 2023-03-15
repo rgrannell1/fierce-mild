@@ -1,0 +1,7 @@
+
+[[edge_functions]]
+path = "/weather"
+function = "main"
+
+[dev]
+  port = 8888
