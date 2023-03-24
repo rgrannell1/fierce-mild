@@ -5,18 +5,23 @@ html * {
 
 @font-face {
   font-family: "Gaeilge";
-  src: url("./fonts/gaeilge.ttf");
+  src: url("../fonts/gaeilge.ttf");
 }
 
 main {
   font-family: Gaeilge;
   height: 100vh;
-  background-image: linear-gradient(135deg, rgba(58, 188, 118, 1) 0%, rgba(51, 162, 103, 0.8) 100%);
+  background-image: linear-gradient(135deg, rgba(58, 188, 118, 1) 0%, rgba(0, 0, 0, 0.8) 100%);
   color: white;
   display: grid;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   grid-template-columns: 2fr 6fr 2fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+p {
+  opacity: 1;
+  transition: opacity 0.75s ease-in-out;
 }
 
 #weather-classification {

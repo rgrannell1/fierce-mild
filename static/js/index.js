@@ -1,15 +1,28 @@
 
 function createGoogleMapsLink(latitude, longitude) {
-  const link = document.createElement('a');
-  link.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
-  link.target = '_blank';
-  link.className = 'coordinates-url';
-  link.textContent = `If you're around here`;
-  return link;
+  const $link = document.createElement('a');
+  $link.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
+  $link.target = '_blank';
+  $link.className = 'coordinates-url';
+  $link.textContent = `If you're around here`;
+  return $link;
 }
 
 async function fetchWeather(lat, lon) {
-  document.getElementById("weather-classification").innerHTML = `I'll have a look...`
+  const $elem = document.getElementById("weather-classification");
+  const $coordinates = document.getElementById("coordinates");
+
+  $elem.style.opacity = 0;
+  $coordinates.style.opacity = 0;
+
+  await delay(750);
+  $elem.textContent = `I'll have a look...`
+  $elem.style.opacity = 1;
+  $coordinates.style.opacity = 1;
+  await delay(1500);
+  $elem.style.opacity = 0;
+  $coordinates.style.opacity = 0;
+  await delay(1000);
 
   const res = await fetch(`.netlify/functions/weather?lat=${lat}&lon=${lon}`);
   return await res.json();
@@ -22,26 +35,26 @@ const getPosition = () => {
 };
 
 async function getLocation() {
+  const $weather = document.getElementById("weather-classification");
+  const $coordinates = document.getElementById("coordinates");
+
   try {
     const position = await getPosition();
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
 
-    const startTime = Date.now();
     const { message } = await fetchWeather(lat, lon);
-    const endTime = Date.now();
 
-    await delay(Math.max(1_500 - (endTime - startTime, 0)));
+    $weather.style.opacity = 1;
+    $coordinates.style.opacity = 1;
 
     if (message) {
-      document.getElementById("weather-classification").innerHTML = message
-
-      const coordinatesElement = document.getElementById('coordinates');
-      coordinatesElement.appendChild(createGoogleMapsLink(lat, lon));
+      $weather.innerHTML = message;
+      $coordinates.appendChild(createGoogleMapsLink(lat, lon));
     }
 
   } catch (err) {
-    document.getElementById("weather-classification").innerHTML = `Your browser's acting up, it gave this error message: ${err.message}`;
+    $weather.innerHTML = `Your browser's acting up, it gave this error message: ${err.message}`;
   }
 }
 
@@ -49,9 +62,11 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function start() {
+async function start() {
   if (!("geolocation" in navigator)) {
-    document.getElementById("weather-classification").innerHTML = `Your browser won't let know where you are, sorry!`
+    $elem = document.getElementById("weather-classification");
+    $elem.innerHTML = `Your browser won't let know where you are, sorry!`
+
     return
   }
 
