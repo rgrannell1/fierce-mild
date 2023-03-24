@@ -1,0 +1,39 @@
+html * {
+  margin: 0px;
+  padding: 0px;
+}
+
+@font-face {
+  font-family: "Gaeilge";
+  src: url("./fonts/gaeilge.ttf");
+}
+
+main {
+  font-family: Gaeilge;
+  height: 100vh;
+  background-image: linear-gradient(135deg, rgba(58, 188, 118, 1) 0%, rgba(51, 162, 103, 0.8) 100%);
+  color: white;
+  display: grid;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  grid-template-columns: 2fr 6fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+#weather-classification {
+  font-size: 6rem;
+  text-align: center;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#coordinates {
+  margin-top: 2rem;
+  font-size: 2rem;
+  text-align: center;
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.coordinates-url {
+  color: white;
+}

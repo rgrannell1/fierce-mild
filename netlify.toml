@@ -1,9 +1,4 @@
 
-
-
-[[edge_functions]]
-path = "/weather"
-function = "route"
-
-[dev]
-  port = 8888
+[build]
+  functions = "functions"
+  publish = "static/"
