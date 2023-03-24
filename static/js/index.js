@@ -1,9 +1,8 @@
-
 function createGoogleMapsLink(latitude, longitude) {
-  const $link = document.createElement('a');
+  const $link = document.createElement("a");
   $link.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
-  $link.target = '_blank';
-  $link.className = 'coordinates-url';
+  $link.target = "_blank";
+  $link.className = "coordinates-url";
   $link.textContent = `If you're around here`;
   return $link;
 }
@@ -16,7 +15,7 @@ async function fetchWeather(lat, lon) {
   $coordinates.style.opacity = 0;
 
   await delay(750);
-  $elem.textContent = `I'll have a look...`
+  $elem.textContent = `I'll have a look...`;
   $elem.style.opacity = 1;
   $coordinates.style.opacity = 1;
   await delay(1500);
@@ -40,6 +39,15 @@ async function getLocation() {
 
   try {
     const position = await getPosition();
+  } catch (err) {
+    if (err.message.includes("User denied Geolocation")) {
+      document.getElementById("weather-classification").innerHTML =
+        "I can hardly tell you what the weather is like if I don't know where you are!";
+      return;
+    }
+  }
+
+  try {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
 
@@ -52,39 +60,40 @@ async function getLocation() {
       $weather.innerHTML = message;
       $coordinates.appendChild(createGoogleMapsLink(lat, lon));
     }
-
   } catch (err) {
-    $weather.innerHTML = `Your browser's acting up, it gave this error message: ${err.message}`;
+    $weather.innerHTML =
+      `Your browser's acting up, it gave this error message: ${err.message}`;
   }
 }
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function start() {
   if (!("geolocation" in navigator)) {
     $elem = document.getElementById("weather-classification");
-    $elem.innerHTML = `Your browser won't let know where you are, sorry!`
+    $elem.innerHTML = `Your browser won't let know where you are, sorry!`;
 
-    return
+    return;
   }
 
-  navigator.permissions.query({name:'geolocation'}).then(async permissionStatus => {
+  navigator.permissions.query({ name: "geolocation" }).then(
+    async (permissionStatus) => {
       if (permissionStatus.state === "granted") {
         // to avoid being too fast!
         await delay(1_000);
         await getLocation();
-
       } else if (permissionStatus.state === "prompt") {
         // lets not be jerks; wait a moment to let the user decide
         await delay(2_000);
         await getLocation();
-
       } else {
-        document.getElementById("weather-classification").innerHTML = "I can hardly tell you what the weather is like if I don't know where you are!"
+        document.getElementById("weather-classification").innerHTML =
+          "I can hardly tell you what the weather is like if I don't know where you are!";
       }
-    });
+    },
+  );
 }
 
 start();
