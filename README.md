@@ -1,8 +1,9 @@
-# there-is-good-drying-in-it
+# Fierce Mild
 
 ## Build
 
 ```
+rs dev
 rs build
 rs test:watch
 ```
