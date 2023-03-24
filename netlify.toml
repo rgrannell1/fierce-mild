@@ -1,7 +1,9 @@
 
+
+
 [[edge_functions]]
 path = "/weather"
-function = "main"
+function = "route"
 
 [dev]
   port = 8888

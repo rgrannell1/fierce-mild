@@ -1,5 +1,5 @@
-import { OpenWeatherAPI } from "./open-weather-api.ts";
-import * as Weather from "./service.ts";
+import { OpenWeatherAPI } from "./src/open-weather-api.ts";
+import * as Weather from "./src/classifier.ts";
 
 // Ensure API key is present
 const API_KEY = Deno.env.get("OPEN_WEATHER_API_KEY");
@@ -15,8 +15,8 @@ export default async (_: Request) => {
   const api = new OpenWeatherAPI(API_KEY);
 
   try {
-    const weather = await api.getWeather(0, 0);
-    const message = Weather.classify(weather);
+    const res = await api.getWeather(0, 0);
+    const message = Weather.classify(res);
 
     return Response.json({
       message,
