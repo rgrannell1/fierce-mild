@@ -19,6 +19,16 @@ const handler: Handler = async (event: HandlerEvent, context: Context) => {
 
   try {
     const res = await api.getWeather(0, 0);
+
+    if (res.cod === 401) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "The website is broken",
+        }),
+      };
+    }
+
     const message = Weather.classify(res);
 
     return {

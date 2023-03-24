@@ -38,7 +38,7 @@ async function getLocation() {
   const $coordinates = document.getElementById("coordinates");
 
   try {
-    const position = await getPosition();
+    var position = await getPosition();
   } catch (err) {
     if (err.message.includes("User denied Geolocation")) {
       document.getElementById("weather-classification").innerHTML =
@@ -78,15 +78,22 @@ async function start() {
     return;
   }
 
+  const $weather = document.getElementById("weather-classification");
+
   navigator.permissions.query({ name: "geolocation" }).then(
+
     async (permissionStatus) => {
       if (permissionStatus.state === "granted") {
         // to avoid being too fast!
-        await delay(1_000);
         await getLocation();
       } else if (permissionStatus.state === "prompt") {
         // lets not be jerks; wait a moment to let the user decide
-        await delay(2_000);
+        $weather.style.opacity = 0;
+        await delay(1_000);
+        $weather.style.opacity = 1;
+        $weather.innerText = "Well, where are you?"
+
+        await delay(1_000);
         await getLocation();
       } else {
         document.getElementById("weather-classification").innerHTML =

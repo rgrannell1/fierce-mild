@@ -156,6 +156,7 @@ function classifyCloudy(code: number, temperatureLabel: string) {
 
 export function classify(weather: WeatherResponse) {
   const [summary] = weather.weather;
+
   const code = summary.id;
   const temperature = weather.main.temp;
 
